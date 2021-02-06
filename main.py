@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import cv2
 import numpy as np
 from numba import  jit
@@ -7,7 +6,6 @@ from numba import  jit
 OUTPUT_DIR = 'output/'
 
 def main_boke():
-
     input_file = input('Image file: ')
     input_img = cv2.imread(input_file)
     if  input_img is  None :
@@ -29,8 +27,7 @@ def main_boke():
 
     # Рамка Zero-border
     # Frame Zero-border
-    h_border = h_kernel//2
-    w_border = w_kernel//2
+    h_border, w_border = h_kernel//2, w_kernel//2
     border_img = cv2.copyMakeBorder(input_img, h_border, h_border, w_border, w_border, 0)
 
     # Свертка по всем каналам
@@ -49,26 +46,23 @@ def main_boke():
     try:
         cv2.imwrite(output_name, out)
     except:
-        return print('Error writing file:')
-
+        return print('Error writing file.')
     return print(f'Image is successfully saved as file: {output_name}')
-
 
 # Свертка по всем каналам
 # Convolution across all channels
 @jit
 def channel_convolution(border_img, kernel_original, h_img, w_img, h_kern, w_kern):
-
     # Нормирование
     # Normalization
     border_img = border_img / 255
     kernel_original = kernel_original / 255
-
+    
     # Массив с размерами основного изображения
     # Array with the dimensions of the main image
     out_img = np.zeros((h_img, w_img,3))
 
-    i = j = k = 0
+    i, j, k = 0, 0, 0
     for k in range(3): # Chanels (По каналам)
         for i in range(h_img): # Hight (По высоте)
             for j in range(w_img): # Width (По ширине)
@@ -78,9 +72,7 @@ def channel_convolution(border_img, kernel_original, h_img, w_img, h_kern, w_ker
         i+=1
     k +=1
 
-    out_img = (out_img * 255).astype(np.uint8)# Denormalization (Денормирование)
-
-    return out_img
+    return  (out_img * 255).astype(np.uint8)# Denormalization (Денормирование)
 
 if __name__ == '__main__':
     main_boke()
