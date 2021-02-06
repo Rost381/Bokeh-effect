@@ -5,7 +5,7 @@ from numba import  jit
 
 OUTPUT_DIR = 'output/'
 
-def main_boke():
+def main_bokeh():
     input_file = input('Image file: ')
     input_img = cv2.imread(input_file)
     if  input_img is  None :
@@ -75,7 +75,7 @@ def channel_convolution(border_img, kernel_original, h_img, w_img, h_kern, w_ker
     return  (out_img * 255).astype(np.uint8)# Denormalization (Денормирование)
 
 if __name__ == '__main__':
-    main_boke()
+    main_bokeh()
 
 
 
